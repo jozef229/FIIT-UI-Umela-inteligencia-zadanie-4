@@ -1,0 +1,16 @@
+Meno: Oblecenie
+AK    ?X je spina,?Y je oblecenie,?X je na ?Y
+POTOM pridaj vyper ?Y,sprava vyprane ?Y
+
+Meno: Vanis
+AK    vyper ?Y,?X je na ?Y
+POTOM vymaz ?X je na ?Y,pridaj ?X bolo na ?Y,sprava vanis ?Y skvrn sa zbavis ( ?X )
+
+Meno: Obsahuje
+AK    ?X je spina,?X bolo na ?Y,?X je velka
+POTOM pridaj ?X je problem
+
+Meno: VelaSpin
+AK    ?X je spina,?Y je spina,<> ?Y ?X,?Z je oblecenie,?X bolo na ?Z,?Y bolo na ?Z
+POTOM vymaz ?X je spina,vymaz ?Y je spina
+

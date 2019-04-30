@@ -1,0 +1,438 @@
+bplist00�_WebMainResource�	
+_WebResourceMIMEType_WebResourceTextEncodingName^WebResourceURL_WebResourceFrameName_WebResourceDataYtext/htmlUUTF-8_6http://www2.fiit.stuba.sk/~kapustik/dop-prod-new2.htmlPO<m<html><head>
+<link rel="SHORTCUT ICON" href="UI3.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<title>Jednoduchy dopredny produkcny system</title>
+<style type="text/css"></style></head>
+<body bgcolor="#f0f4ff">
+<div style="max-width: 624pt; min-width: 280pt; margin: auto; background-color: white; padding: 4pt">
+
+<h2>Dopredný produkčný systém</h2>
+<h2>Zadanie č. 4
+<hr align="LEFT" width="140"></h2>
+
+<h3>Definovanie problému</h3>
+Úlohou je vytvoriť jednoduchý dopredný produkčný systém, s prípadnými rozšíreniami,
+ napríklad o kladenie otázok používateľovi alebo vyhodnocovanie matematických výrazov.
+<p>
+Produkčný systém patrí medzi znalostné systémy, teda medzi systémy, ktoré
+ so svojimi údajmi narábajú ako so znalosťami. Znalosti vyjadrujú nielen informácie
+ o nejakom objekte, ale aj súvislosti medzi objektami, vlastnosti zvolených problémov
+ a spôsoby hľadania ich riešenia. Znalostný systém je teda v najjednoduchšom prípade
+ dvojica - program, ktorý dokáže všeobecne manipulovať so znalosťami a báza znalostí,
+ ktorá opisuje problém a vzťahy, ktoré tam platia. Znalosti majú definovanú nejakú
+ štruktúru a spôsob narábania s touto štruktúrou - to sa nazýva formalizmus reprezentácie
+ znalostí. Program vie pracovať s týmto formalizmom, ale nesmie byť závislý od toho,
+ aké znalosti spracováva, inak by to už nebol systém, kde riešenie úlohy je dané
+ použitými údajmi.
+</p><p>
+Produkčný systém na základe odvodzovacieho pravidla <i>modus ponens</i>
+ (pravidlo odlúčenia) odvodzuje zo známych faktov a produkčných pravidiel
+ nové fakty. Ak systém nemá dostatok vstupných údajov, môže klásť používateľovi otázky.<br>
+ <b>Produkčný systém ako program nepozná konkrétne pravidlá ani fakty!</b> Pozná
+ len formalizmus, v tomto prípade štruktúru pravidiel a faktov a spôsob ich spracovania.
+ Pozná akcie (pridaj, vymaž, ...), ktoré sa môžu vykonávať, lebo tie patria do opisu
+ formalizmu.
+</p><p>
+Táto úloha sa v tomto tvare nemôže riešiť v jazyku PROLOG, pretože PROLOG už má vstavaný
+ mechanizmus na odvodzovanie znalostí a výsledný program by neriešil úlohu, len vhodne
+ načítal znalosti. V prípade riešenia úlohy v jazyku PROLOG je zadanie rozšírené o pravidlá
+ M z N, dynamickú prioritu a niekoľko ďalších špeciálnych podmienok na porovnávanie.
+ Pravidlo M z N je splnené, ak je splnených aspoň M elementárnych podmienok z jeho celkového
+ počtu N. Priorita určuje, ktoré pravidlo bude vykonané, ak ich je splnených viac a závisí
+ od statickej - vopred definovanej priority a dynamickej časti, ktorá v našom prípade
+ uvádza pomer počtu splnených podmienok ku všetkým podmienkam. Príklad báz poznatkov, nad
+ ktorými by takýto systém mal dať korektnú odpoveď, <a href="dop-prod-prolog.html">je tu</a>.
+</p><p>
+K funkčnému programu je potrebné pripojiť aj dokumentáciu s opisom konkrétneho
+ riešenia (reprezentácia znalostí, algoritmus, špecifické vlastnosti)
+ a zhodnotením činnosti vytvoreného systému. Systém musí správne pracovať
+ aspoň nad jednoduchou bázou znalostí (ekvivalentnou s prvou uvedenou), bázu
+ znalostí si <b>musí</b> systém vedieť načítať zo súboru. Je vhodné si vytvoriť
+ aj vlastné bázy znalostí a odovzdať spolu so zdrojovým kódom.
+
+</p><hr>
+<a name="priklad"><h3>Príklad jednoduchého dopredného produkčného systému</h3></a>
+Tento <a href="dp-sys-ot.html">produkčný systém</a> je
+ napísaný v Javascripte.
+ Na rozdiel od opisu algoritmu v tomto dokumente (krok 2.) používa paralelné
+ testovanie podmienok. To znamená, že nájde všetky možné naviazania premenných
+ v každej podmienke, vytvorí ich zmysluplné kombinácie, ošetrí špeciálne
+ podmienky a výsledné naviazania použije na vygenerovanie alternatív pravej
+ strany pravidla. Táto stratégia vyzerala byť vhodnejšia vzhľadom k použitiu
+ polí v Javascripte. Môžete si všimnúť, že prevažná väčšina funkcií sa
+ používa len na získanie použiteľných pravých strán pravidiel. Rozdiel oproti
+ vášmu zadaniu je ešte v tom, že z bezpečnostných dôvodov systém nenačítava
+ bázu z externých súborov.
+<p>
+Produkčný systém je rozšírený o vyhodnotenie pravej strany pomocou eval.
+ Pravidlá pre faktoriál odmazávajú zbytočné fakty a preto výpočet
+ faktoriálu 100 trvá kratšie ako zistenie 16-tich nových rodinných vzťahov.
+</p><p>
+Druhé rozšírenie predstavujú otázky na používateľa. Sú použité v báze
+ znalostí Fiaty2. Komunikácia je jednoduchá - používateľ musí vždy napísať
+ správnu odpoveď, inak inferencia nemá ako pokračovať. Všimnite si, že
+ vhodné odpovede sú aspoň zakompované do otázky.
+</p><hr>
+
+<!-- ============================================ -->
+<h3>Reprezentácia faktov a produkčných pravidiel</h3>
+<big>Fakt</big> zodpovedá výroku - ak ho systém obsahuje, považuje ho za
+pravdivý; ak ho neobsahuje, systém ho považuje za nepravdivý
+alebo nechá rozhodnúť používateľa. Fakty neobsahujú premenné!
+<p>
+Fakty sa na začiatku riešenia nachádzajú v báze faktov, a
+sú reprezentované napríklad zoznamom (nejaká sekvencia)
+</p><pre>   (toto je fakt)
+</pre>
+<p>
+<big>Produkčné pravidlá</big> sú uložené v báze pravidiel. Jednoduchý
+ produkčný systém nesmie modifikovať pravidlá počas svojej činnosti.
+</p><p>
+Pravidlo má tri časti:
+</p><ul>
+<li>meno
+</li><li>podmienka
+</li><li>akcie
+</li></ul>
+<b>Meno</b> je identifikátorom pravidla a používa sa na sledovanie priebehu
+ inferencie – je vhodné, aby systém mal jednoduchý aj rozšírený (debug,
+ verbal) režim.
+<p>
+<b>Podmienka</b> je konjunkciou elementárnych podmienok, to znamená, že podmienka
+ pravidla je splnená, ak sú splnené všetky elementárne podmienky a nenastal
+ konflikt v žiadnej premennej.
+</p><dir>
+Elementárna podmienka je buď vzorom faktu (môže obsahovať premenné)
+<pre>(?co je fakt)</pre>
+alebo je to špeciálna podmienka
+<pre>(&lt;&gt; ?a ?b)</pre>
+ktorá sa rozpozná na základe tvaru.<br>
+Elementárna podmienka je splnená, ak sa zhoduje s niektorým faktom. Ak
+ je to špeciálna podmienka, tak musí byť splnený ňou definovaný vzťah.
+ Horeuvedená špeciálna podmienka je splnená, ak sa hodnota <i>a</i> nezhoduje
+ s hodnotou <i>b</i>.<br>
+<small>Poznámka: špeciálne podmienky sa vyhodnocujú nakoniec, keď sú už hodnoty
+ všetkých premenných známe.</small>
+</dir>
+<b>Akcie</b> produkčného pravidla predstavujú zoznam akcií, ktoré sa aktivujú,
+ ak je pravidlo určené na vykonanie. Pravidlá môžu obsahovať tri základné
+ typy akcií:
+<ul>
+<li>PRIDAJ vzor
+</li><li>VYMAZ vzor
+</li><li>SPRAVA text
+</li></ul>
+a voliteľné:
+<ul>
+<li>OTAZKA text vzor
+</li></ul>
+Akcie majú ako argument vzor, ktorý môže obsahovať len premenné nachádzajúce sa v podmienke.
+ Pretože splnená podmienka má naviazané všetky premenné, nahradia sa aj v akciách
+ premenné konkrétnymi hodnotami a zapisuje, vymazáva, pridáva alebo zobrazuje sa
+ len skutočný fakt (alebo text).
+<p>
+Vzor v akciách môže voliteľne obsahovať aj funkciu eval na vyhodnotenie matematického výrazu.
+</p><p>
+Príklady:
+</p><pre>BRAT:
+AK (?R je rodic ?X)(?R je rodic ?Y)(muz ?Y)(&lt;&gt; ?X ?Y)
+POTOM (PRIDAJ ?Y je brat ?X)(SPRAVA Viem ze ?X ma brata, vola sa ?Y)
+
+EXPORT17:
+AK (na sklade ?X)(poziadavka ?N na ?X)
+POTOM (PRIDAJ vydane ?X na ziadost ?N)(VYMAZ na sklade ?X)(VYMAZ poziadavka ?N na ?X)
+</pre>
+<hr>
+
+<!-- =============== -->
+<h3>Opis inferencie</h3>
+<b>Inferenčný cyklus:</b>
+<ol>
+<li>Získaj zoznam známych faktov, choď na krok 2.
+</li><li>Vytvor zoznam všetkých aplikovateľných inštancií pravidiel, choď na krok 3.
+</li><li>Odfiltruj všetky také pravidlá, ktoré by nezmenili fakty v pracovnej pamäti. Choď na krok 4.
+</li><li>Ak neexistuje žiadna aplikovateľná inštancia pravidla na aplikovanie, koniec, inak choď na krok 5.
+</li><li>Stratégiou riešenia konfliktov vyber najvhodnejšie pravidlo a jeho najvhodnejšiu inštanciu. Choď na krok 6.
+</li><li>Vykonaj vybranú inštanciu pravidla. Choď na krok 2.
+</li></ol>
+<b>Podrobnejší opis niektorých krokov.</b>
+
+<p><b>Krok 2:</b>
+</p><dir>
+Pre každé pravidlo vykonaj:
+<dir>nájdi všetky možné naviazania premenných pre podmienku pravidla
+<br>pre každé naviazanie vykonaj:
+<dir>naviaž premenné v pravej strane strane pravidla
+<br>výslednú pravú stranu ulož ako potenciálne aplikovateľnú inštanciu
+</dir>
+koniec
+</dir>
+koniec
+</dir>
+
+<b></b><p><b>Krok 3.</b>
+</p><dir>
+Inštancia pravidla je odfiltrovaná, ak okrem ďalej uvedených akcií neobsahuje nič iné:
+<br>akcia “pridaj”, ktorá pridáva to, čo už v pracovnej pamäti je,
+<br>akcia “vymaž”, ktorá chce z pracovnej pamäti rušiť to čo tam nie je,
+<br>akcia “správa”.
+<br>Z uvedeného vyplýva, že pravidlo, ktoré má ako akciu len nejakú správu, sa nikdy nevykoná!
+ Také pravidlo by sa potom vykonávalo donekonečna. Preto môžeme robiť výpis len vtedy, keď sa
+ niečo zmení v pracovnej pamäti – môžeme si to predstaviť aj ako evidenciu, že sa niečo vypísalo.
+</dir>
+
+<b></b><p><b>Krok 4.</b>
+</p><dir>
+Ak existuje aspoň jedna aplikovateľná inštancia pravidla, choď na krok 5.
+Inak
+<dir>
+Ak sa nemôžem pýtať používateľa, tak koniec. Inak
+<dir>
+Ak existuje pravidlo, ktoré má aspoň jednu elementárnu podmienku splnenú
+a aspoň jednu nesplnenú a ešte sme sa na jeho nesplnené podmienky nepýtali,
+opýtaj sa na nesplnené podmienky používateľa (a ulož prípadné fakty) a choď na krok 2.<br>
+Inak koniec.
+</dir>
+</dir>
+</dir>
+
+<b></b><p><b>Krok 5.</b>
+</p><dir>Vyberáme zvyčajne prvú inštanciu prvého pravidla.<br>
+<font color="#DD0000">Nezabudnite, že produkčný systém vykoná v jednom kroku
+ len jediné pravidlo!</font>
+</dir>
+
+<b></b><p><b>Krok 6.</b>
+</p><dir>Vykonajú sa všetky akcie, ktoré majú zmysel. Napr. žiadny fakt sa do
+ pracovnej pamäti nezapíše dvakrát.
+</dir>
+
+<hr>
+<p>Zhrnutie častých otázok alebo <a href="dop-prod-faq.html">opis správania sa produkčného systému trochu inak</a>.
+</p><hr>
+<h3>Príklady báz znalostí</h3>
+<table border="" bgcolor="#eeeeee"><tbody><tr><td>
+<i><b>Jednoduchá báza znalostí</b><br>
+Na splnenie zadania stačí, aby systém pracoval korektne s touto bázou znalostí.</i></td></tr><tr><td>
+<pre>
+<b>FAKTY:</b>
+
+(Peter je rodic Jano)
+(Peter je rodic Vlado)
+(manzelia Peter Eva)
+(Vlado je rodic Maria)
+(Vlado je rodic Viera)
+(muz Peter)
+(muz Jano)
+(muz Vlado)
+(zena Maria)
+(zena Viera)
+(zena Eva)
+
+<b>PRAVIDLÁ:</b>
+
+DruhyRodic1:
+AK ((?X je rodic ?Y)(manzelia ?X ?Z))
+POTOM ((pridaj ?Z je rodic ?Y))
+
+DruhyRodic2:
+AK ((?X je rodic ?Y)(manzelia ?Z ?X))
+POTOM ((pridaj ?Z je rodic ?Y))
+
+Otec:
+AK ((?X je rodic ?Y)(muz ?X))
+POTOM ((pridaj ?X je otec ?Y))
+
+Matka:
+AK ((?X je rodic ?Y)(zena ?X))
+POTOM ((pridaj ?X je matka ?Y))
+
+Surodenci:
+AK ((?X je rodic ?Y)(?X je rodic ?Z)(&lt;&gt; ?Y ?Z))
+POTOM ((pridaj ?Y a ?Z su surodenci))
+
+Brat:
+AK ((?Y a ?Z su surodenci)(muz ?Y))
+POTOM ((pridaj ?Y je brat ?Z))
+
+Stryko:
+AK ((?Y je brat ?Z)(?Z je rodic ?X))
+POTOM ((pridaj ?Y je stryko ?X)(sprava ?X ma stryka))
+
+Test mazania:
+AK ((?Y je stryko ?X)(zena ?X))
+POTOM ((vymaz zena ?X))
+</pre>
+</td></tr></tbody></table>
+<p>
+<table border="" bgcolor="#eeeeee">
+<tbody><tr><td colspan="2"><i><b>Báza znalostí s otázkami na používateľa.</b><br>
+V <a href="#priklad">príklade</a> je označená ako Fiaty2. Je možné ju aj
+ transformovať na jednoduchú bázu znalostí. Tam je tiež vidno, že jednoduchá
+ báza znalostí (Fiaty) si vyžaduje poznať všetky fakty vopred.</i></td></tr>
+<tr valign="top"><td>
+<i>Akcia <b>otázka</b> v tomto príklade má dve časti.<br>
+ Prvá časť obsahuje text otázky (až po dvojbodku) a možné odpovede.<br>
+ Druhá časť obsahuje vzor, kde namiesto výkričníka sa pripojí odpoveď
+ a taký fakt sa vloží do pracovnej pamäti.</i><p>
+</p><pre><b>FAKTY:</b>
+(start)
+
+<b>PRAVIDLÁ:</b>
+p1:
+AK ((start))
+POTOM ((otazka (Aky typ karoserie sa vam paci: sedan hatchback)(karoseria !))
+       (vymaz start))
+
+p2:
+AK ((karoseria sedan))
+POTOM ((otazka (Pozadujete pocet dveri: 4 5)(sedan !)))
+
+p3:
+AK ((sedan 5))
+POTOM ((pridaj vybrany Fiat Croma)
+      (sprava Fiat Croma))
+
+p4:
+AK ((sedan 4))
+POTOM ((otazka (Ktora naprava by mala byt pohanana: predna zadna)(naprava !))))
+
+p5:
+AK ((naprava predna))
+POTOM ((pridaj vybrany Fiat Tempra)
+       (sprava Fiat Tempra))
+
+p6:
+AK ((naprava zadna)))
+POTOM ((pridaj vybrany Fiat Mirafiorri)
+       (sprava Fiat Mirafiorri)))
+
+p7:
+AK ((karoseria hatchback))
+POTOM ((otazka (Pozadujete pocet dveri: 3 5)(hatchback !)))
+
+p8:
+AK ((hatchback 3))
+POTOM ((otazka (Otvorena predna maska: ano nie mriezka)(3 maska !)))
+
+p9:
+AK ((3 maska ano))
+POTOM ((pridaj vybrany Fiat Tipo3)
+       (sprava Fiat Tipo3))
+
+p10:
+AK ((3 maska nie))
+POTOM ((pridaj vybrany Fiat Punto3)
+       (sprava Fiat Punto3))
+
+p11:
+AK ((3 maska mriezka))
+POTOM ((pridaj vybrany Fiat Panda3)
+       (sprava Fiat Panda3))
+
+p12:
+AK ((hatchback 5))
+POTOM ((otazka (Otvorena predna maska: ano nie mriezka)(5 maska !)))
+
+p13:
+AK ((5 maska ano))
+POTOM ((pridaj vybrany Fiat Tipo5)
+       (sprava Fiat Tipo5))
+
+p14:
+AK ((5 maska nie))
+POTOM ((pridaj vybrany Fiat Punto5)
+       (sprava Fiat Punto5))
+
+p15:
+AK ((5 maska mriezka))
+POTOM ((otazka (Aky tvar svetiel sa vam paci: okruhle integrovane)(! svetla)))
+
+p16:
+AK ((integrovane svetla))
+POTOM ((pridaj vybrany Fiat Uno5)
+       (sprava Fiat Uno5))
+
+p17:
+AK ((okruhle svetla))
+POTOM ((pridaj vybrany Fiat Ritmo5)
+       (sprava Fiat Ritmo5))
+</pre>
+</td></tr></tbody></table>
+</p><p>
+<table border="" bgcolor="#eeeeee">
+<tbody><tr><td colspan="2"><i><b>Báza znalostí, využívajúca funkciu eval.</b><br>
+Eval po naviazaní premenných vyhodnotí svoj argument ako matematický výraz a namiesto seba vráti jeho hodnotu.</i></td></tr><tr>
+</tr><tr valign="top"><td>
+<i>V jednoduchšom tvare</i>
+<pre><b>FAKTY:</b>
+(faktorial 5)
+
+<b>PRAVIDLÁ:</b>
+
+F1:
+AK ((faktorial 0))
+POTOM ((vymaz faktorial 0)
+       (pridaj faktorial 0 je 1)
+       (sprava Faktorial 0 je 1))
+
+F2:
+AK ((faktorial ?x)(&lt;&gt; ?x 0))
+POTOM ((vymaz faktorial ?x)
+       (pridaj medzivypocet ?x (eval (1- ?x)) ?x))
+
+F3:
+AK ((medzivypocet ?x 0 ?y))
+POTOM ((vymaz medzivypocet ?x 0 ?y)
+       (pridaj faktorial ?x je ?y)
+       (sprava Faktorial ?x je ?y))
+
+F4:
+AK ((medzivypocet ?x ?y ?z))
+POTOM ((vymaz medzivypocet ?x ?y ?z)
+       (pridaj medzivypocet ?x (eval (1- ?y))
+                            (eval (* ?y ?z)) ))
+</pre>
+</td><td>
+<i>S otázkou</i>
+<pre><b>FAKTY:</b>
+(start)
+
+<b>PRAVIDLÁ:</b>
+
+F1:
+AK ((faktorial 0))
+POTOM ((vymaz faktorial 0)
+       (pridaj faktorial 0 je 1)
+       (sprava Faktorial 0 je 1))
+
+F2:
+AK ((faktorial ?x)(&lt;&gt; ?x 0))
+POTOM ((vymaz faktorial ?x)
+       (pridaj medzivypocet ?x (eval (1- ?x)) ?x))
+
+F3:
+AK ((medzivypocet ?x 0 ?y))
+POTOM ((vymaz medzivypocet ?x 0 ?y)
+       (pridaj faktorial ?x je ?y)
+       (sprava Faktorial ?x je ?y))
+
+F4:
+AK ((medzivypocet ?x ?y ?z))
+POTOM ((vymaz medzivypocet ?x ?y ?z)
+       (pridaj medzivypocet ?x (eval (1- ?y))
+                            (eval (* ?y ?z)) ))
+
+F5:
+AK ((start))
+POTOM ((otazka (Pocitame faktorial z: cele-cislo)
+               (faktorial !)))
+</pre>
+</td></tr></tbody></table>
+
+
+</p></div>
+
+
+</body></html>    ( > \ k � � � � � �                           =O

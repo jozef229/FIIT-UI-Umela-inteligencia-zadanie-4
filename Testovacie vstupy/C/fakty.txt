@@ -1,0 +1,8 @@
+zena Mima
+zena Sasa
+manzelia Daniela Jaro
+Jaro je rodic Sasa
+Daniela je rodic Mima
+Marian je brat Jaro
+muz Marian
+Peto je brat Daniela
